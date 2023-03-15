@@ -1,5 +1,6 @@
 import { database } from "firebase-admin";
 import RootData, { DeviceData, Gender, PatientData } from "src/service/data-definition";
+import { initializeFirebaseAdmin } from "src/service/firebase-admin";
 // import { initializeFirebaseAdmin } from "src/service/firebase-admin";
 
 const devices: DeviceData[] = [
@@ -26,8 +27,8 @@ const devices: DeviceData[] = [
 const patients: PatientData[] = [
   {
     patientid: "patient-1", // uuid
-    patienname: "cimeong",
-    patientype: "kucing",
+    patientname: "cimeong",
+    patienttype: "kucing",
     gender: Gender.male,
     ageinmonth: 20, // bulan
     weight: 5, // kg
@@ -36,8 +37,8 @@ const patients: PatientData[] = [
   },
   {
     patientid: "patient-2", // uuid
-    patienname: "cikapas",
-    patientype: "kucing",
+    patientname: "cikapas",
+    patienttype: "kucing",
     gender: Gender.female,
     ageinmonth: 20, // bulan
     weight: 5, // kg
@@ -46,8 +47,8 @@ const patients: PatientData[] = [
   },
   {
     patientid: "patient-3", // uuid
-    patienname: "ciguguk",
-    patientype: "anjing",
+    patientname: "ciguguk",
+    patienttype: "anjing",
     gender: Gender.male,
     ageinmonth: 20, // bulan
     weight: 8, // kg
@@ -57,6 +58,7 @@ const patients: PatientData[] = [
 ];
 
 export default function handler(req, res) {
+  initializeFirebaseAdmin();
   const data: RootData = {
     devicestore: devices.reduce(
       (prev, cur) => ({
@@ -68,7 +70,7 @@ export default function handler(req, res) {
     patientstore: patients.reduce(
       (prev, cur) => ({
         ...prev,
-        [cur.patientid]: cur,
+        [cur.patientid as string]: cur,
       }),
       {}
     ),

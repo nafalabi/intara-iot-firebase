@@ -1,51 +1,57 @@
+import { z } from "zod";
+
 export enum Gender {
-    male = 1,
-    female = 0,
+  male = 1,
+  female = 0,
 }
 
-export interface PatientData {
-    patientid: string, // uuid
-    patienname: string,
-    patientype: string,
-    gender: Gender,
-    ageinmonth: number, // bulan
-    weight: number, // kg
-    targetinfusion: number,
-    updated_at: number,
-};
+export const PatientDataSchema = z.object({
+  patientid: z.string(), // uuid
+  patientname: z.string().min(1),
+  patienttype: z.string(),
+  gender: z.nativeEnum(Gender),
+  ageinmonth: z.number(), // bulan
+  weight: z.number(), // kg
+  targetinfusion: z.number(),
+  updated_at: z.number(),
+});
 
-export interface DeviceData {
-    deviceid: string,
-    weightA: number,
-    weightB: number,
-    updated_at: number,
-};
+export type PatientData = typeof PatientDataSchema._output;
+
+export const DeviceDataSchema = z.object({
+  deviceid: z.string(),
+  updated_at: z.number(),
+  weightA: z.number(),
+  weightB: z.number(),
+});
+
+export type DeviceData = typeof DeviceDataSchema._output;
 
 export interface Usage {
-    usageid: string,
-    deviceid: string,
-    patientid: PatientData['patientid'],
-    patienref: `${PatientData['patienname']}-${PatientData['updated_at']}`,
-    infusionid: string,
-    startDateTime: number,
-    endDateTime: number,
-    initialWeightA: number,
-    initialWeightB: number,
-    currentWeightA: number,
-    currentWeightB: number,
-    rateDrop: number,
-};
+  usageid: string;
+  deviceid: string;
+  patientid: PatientData["patientid"];
+  patienref: `${PatientData["patientname"]}-${PatientData["updated_at"]}`;
+  infusionid: string;
+  startDateTime: number;
+  endDateTime: number;
+  initialWeightA: number;
+  initialWeightB: number;
+  currentWeightA: number;
+  currentWeightB: number;
+  rateDrop: number;
+}
 
 export interface RootData {
-    usagestore: {
-        [key: Usage['usageid']] : Usage,
-    },
-    devicestore: {
-        [key: DeviceData['deviceid']]: DeviceData,
-    },
-    patientstore: {
-        [key: PatientData['patientid']]: PatientData,
-    },
-};
+  usagestore: {
+    [key: NonNullable<Usage["usageid"]>]: Usage;
+  };
+  devicestore: {
+    [key: NonNullable<DeviceData["deviceid"]>]: DeviceData;
+  };
+  patientstore: {
+    [key: NonNullable<PatientData["patientid"]>]: PatientData;
+  };
+}
 
 export default RootData;

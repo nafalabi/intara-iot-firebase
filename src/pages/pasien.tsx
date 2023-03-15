@@ -1,17 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
-import { format, subDays, subHours } from "date-fns";
+import { format } from "date-fns";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import { getDatabase, ref, child, get } from "firebase/database";
 import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
-import { useSelection } from "src/hooks/use-selection";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-import { CustomersTable } from "src/sections/customer/customers-table";
 import { CustomersSearch } from "src/sections/customer/customers-search";
-import { applyPagination } from "src/utils/apply-pagination";
 import { initializeFirebaseClient } from "../service/firebase-client";
 import CommonTable, { CommonTableColumn } from "src/components/table";
 import { Gender, PatientData } from "src/service/data-definition";
+import ModalCreatePasien from "src/sections/pasien/modal-create";
 
 const columns: CommonTableColumn<PatientData>[] = [
   {
@@ -20,11 +18,11 @@ const columns: CommonTableColumn<PatientData>[] = [
     render: (data) => format(data.updated_at, "dd/MM/yyyy"),
   },
   {
-    accessor: "patienname",
+    accessor: "patientname",
     label: "Nama Pasien",
   },
   {
-    accessor: "patientype",
+    accessor: "patienttype",
     label: "Jenis Pasien",
   },
   {
@@ -74,6 +72,7 @@ const useDataPasien = () => {
 
 const Page = () => {
   const { data } = useDataPasien();
+  const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
 
   return (
     <>
@@ -101,6 +100,7 @@ const Page = () => {
                     </SvgIcon>
                   }
                   variant="contained"
+                  onClick={() => setIsModalCreateOpen(true)}
                 >
                   Add
                 </Button>
@@ -111,6 +111,13 @@ const Page = () => {
           </Stack>
         </Container>
       </Box>
+
+      <ModalCreatePasien
+        open={isModalCreateOpen}
+        handleClose={() => {
+          setIsModalCreateOpen(false);
+        }}
+      />
     </>
   );
 };
