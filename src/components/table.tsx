@@ -40,7 +40,7 @@ const CommonTable = <TData extends {[key: string]: any}>(props: CommonTableProps
   return (
     <Card>
       <Scrollbar>
-        <Box sx={{ minWidth: 800 }}>
+        <Box>
           <Table>
             <TableHead>
               <TableRow>

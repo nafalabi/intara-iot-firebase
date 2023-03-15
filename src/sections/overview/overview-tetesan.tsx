@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
+import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
+import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
+import EyeDropperIcon from '@heroicons/react/24/solid/EyeDropperIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
-export const OverviewTotalProfit = (props) => {
-  const { value, sx } = props;
+export const OverviewTetesan = (props) => {
+  const { difference, positive = false, sx, value } = props;
 
   return (
     <Card sx={sx}>
@@ -19,21 +21,21 @@ export const OverviewTotalProfit = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Profit
+              Tetesan
             </Typography>
-            <Typography variant="h4">
+            <Typography variant="h5">
               {value}
             </Typography>
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: 'primary.main',
+              backgroundColor: 'error.main',
               height: 56,
               width: 56
             }}
           >
             <SvgIcon>
-              <CurrencyDollarIcon />
+              <EyeDropperIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -42,7 +44,9 @@ export const OverviewTotalProfit = (props) => {
   );
 };
 
-OverviewTotalProfit.propTypes = {
-  value: PropTypes.string,
-  sx: PropTypes.object
+OverviewTetesan.prototypes = {
+  difference: PropTypes.number,
+  positive: PropTypes.bool,
+  sx: PropTypes.object,
+  value: PropTypes.string.isRequired
 };
