@@ -2,15 +2,22 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { format } from "date-fns";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import PencilSquareIcon from "@heroicons/react/24/solid/PencilSquareIcon";
+import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import firebase from "firebase";
-import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
+import { Box, Button, Container, IconButton, Stack, SvgIcon, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { initializeFirebaseClient } from "../service/firebase-client";
 import CommonTable, { CommonTableColumn } from "src/components/table";
 import { Gender, PatientData } from "src/service/data-definition";
 import ModalCreatePasien from "src/sections/pasien/modal-create";
+import ModalEditPasien from "src/sections/pasien/modal-edit";
+import ModalDeletePasien from "src/sections/pasien/modal-delete";
 
-const columns: CommonTableColumn<PatientData>[] = [
+const generateColumns = (handlers: {
+  handleOpenEditModal: (data: PatientData) => void;
+  handleOpenDeleteModal: (data: PatientData) => void;
+}): CommonTableColumn<PatientData>[] => [
   {
     accessor: "updated_at",
     label: "Tanggal",
@@ -39,6 +46,23 @@ const columns: CommonTableColumn<PatientData>[] = [
     label: "Umur",
     render: (data) => `${data.ageinmonth} Bulan`,
   },
+  {
+    label: "Action",
+    render: (data) => (
+      <Stack direction="row" gap={2}>
+        <IconButton size="small" onClick={() => handlers.handleOpenEditModal(data)}>
+          <SvgIcon fontSize="small">
+            <PencilSquareIcon />
+          </SvgIcon>
+        </IconButton>
+        <IconButton size="small" onClick={() => handlers.handleOpenDeleteModal(data)}>
+          <SvgIcon fontSize="small">
+            <XCircleIcon />
+          </SvgIcon>
+        </IconButton>
+      </Stack>
+    ),
+  },
 ];
 
 const useDataPasien = () => {
@@ -48,7 +72,7 @@ const useDataPasien = () => {
     initializeFirebaseClient();
     const db = firebase.database();
     const dbRef = db.ref("/patientstore");
-    dbRef.on('value', (snapshot) => {
+    dbRef.on("value", (snapshot) => {
       const tempData: PatientData[] = [];
       if (snapshot.exists()) {
         snapshot.forEach((child) => {
@@ -69,6 +93,24 @@ const useDataPasien = () => {
 const Page = () => {
   const { data } = useDataPasien();
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedPasien, setSelectedPasien] = useState<PatientData | null>(null);
+
+  const handleOpenEditModal = (data: PatientData) => {
+    setSelectedPasien(data);
+    setIsModalEditOpen(true);
+  };
+
+  const handleOpenDeleteModal = (data: PatientData) => {
+    setSelectedPasien(data);
+    setIsModalDeleteOpen(true);
+  };
+
+  const columns = generateColumns({
+    handleOpenEditModal,
+    handleOpenDeleteModal,
+  });
 
   return (
     <>
@@ -118,6 +160,20 @@ const Page = () => {
         open={isModalCreateOpen}
         handleClose={() => {
           setIsModalCreateOpen(false);
+        }}
+      />
+      <ModalEditPasien
+        data={selectedPasien}
+        open={isModalEditOpen}
+        handleClose={() => {
+          setIsModalEditOpen(false);
+        }}
+      />
+      <ModalDeletePasien
+        data={selectedPasien}
+        open={isModalDeleteOpen}
+        handleClose={() => {
+          setIsModalDeleteOpen(false);
         }}
       />
     </>
