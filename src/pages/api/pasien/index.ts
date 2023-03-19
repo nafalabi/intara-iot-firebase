@@ -32,7 +32,7 @@ const handler: NextApiHandler = (req, res) => {
 
   ref.set(newData);
 
-  return res.status(200).json({ success: true, data: newData });
+  return res.status(201).json({ success: true, data: newData });
 };
 
 export default handler;

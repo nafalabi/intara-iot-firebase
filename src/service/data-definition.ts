@@ -20,6 +20,7 @@ export type PatientData = typeof PatientDataSchema._output;
 
 export const DeviceDataSchema = z.object({
   deviceid: z.string(),
+  patientid: z.string().optional(),
   updated_at: z.number(),
   weightA: z.number(),
   weightB: z.number(),

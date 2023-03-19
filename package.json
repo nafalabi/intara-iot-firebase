@@ -27,7 +27,7 @@
     "@types/uuid": "^9.0.1",
     "apexcharts": "3.37.0",
     "date-fns": "2.29.3",
-    "firebase": "^9.17.2",
+    "firebase": "^8.10.1",
     "firebase-admin": "^11.5.0",
     "formik": "2.2.9",
     "next": "13.1.6",

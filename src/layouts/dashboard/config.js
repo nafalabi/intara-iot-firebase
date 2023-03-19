@@ -1,7 +1,8 @@
 import ChartBarIcon from "@heroicons/react/24/solid/ChartBarIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
-import CalculatorIcon from '@heroicons/react/24/solid/CalculatorIcon';
-import BookmarkSlashIcon from '@heroicons/react/24/solid/BookmarkSlashIcon';
+import CalculatorIcon from "@heroicons/react/24/solid/CalculatorIcon";
+import BookmarkSlashIcon from "@heroicons/react/24/solid/BookmarkSlashIcon";
+import CpuChipIcon from "@heroicons/react/24/solid/CpuChipIcon";
 import { SvgIcon } from "@mui/material";
 
 export const items = [
@@ -38,6 +39,15 @@ export const items = [
     icon: (
       <SvgIcon fontSize="small">
         <BookmarkSlashIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Data Device",
+    path: "/perangkat",
+    icon: (
+      <SvgIcon fontSize="small">
+        <CpuChipIcon />
       </SvgIcon>
     ),
   },

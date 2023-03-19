@@ -24,9 +24,10 @@ export interface CommonTableProps<TData> {
   onRowsPerPageChange?: () => void;
   page: number;
   rowsPerPage: number;
+  withPagination?: boolean;
 }
 
-const CommonTable = <TData extends {[key: string]: any}>(props: CommonTableProps<TData>) => {
+const CommonTable = <TData extends { [key: string]: any }>(props: CommonTableProps<TData>) => {
   const {
     data = [],
     columns = [],
@@ -35,6 +36,7 @@ const CommonTable = <TData extends {[key: string]: any}>(props: CommonTableProps
     onRowsPerPageChange = () => {},
     page = 0,
     rowsPerPage = 0,
+    withPagination = true,
   } = props;
 
   return (
@@ -61,19 +63,28 @@ const CommonTable = <TData extends {[key: string]: any}>(props: CommonTableProps
                   </TableRow>
                 );
               })}
+              {data.length === 0 && (
+                <TableRow hover>
+                  <TableCell colSpan={columns.length}>
+                    <Box textAlign="center" py={3}>No Data</Box>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </Box>
       </Scrollbar>
-      <TablePagination
-        component="div"
-        count={total}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
+      {withPagination && (
+        <TablePagination
+          component="div"
+          count={total}
+          onPageChange={onPageChange}
+          onRowsPerPageChange={onRowsPerPageChange}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
+      )}
     </Card>
   );
 };

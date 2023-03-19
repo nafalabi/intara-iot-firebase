@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { format } from "date-fns";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import { getDatabase, ref, child, get } from "firebase/database";
+import firebase from "firebase";
 import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
-import { CustomersSearch } from "src/sections/customer/customers-search";
 import { initializeFirebaseClient } from "../service/firebase-client";
 import CommonTable, { CommonTableColumn } from "src/components/table";
 import { Gender, PatientData } from "src/service/data-definition";
@@ -47,22 +46,19 @@ const useDataPasien = () => {
 
   useEffect(() => {
     initializeFirebaseClient();
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `/patientstore`))
-      .then((snapshot) => {
-        const tempData: PatientData[] = [];
-        if (snapshot.exists()) {
-          snapshot.forEach((child) => {
-            const row = child.val();
-            tempData.push(row);
-          });
-        }
-        console.log(snapshot.val());
-        setData(tempData);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const db = firebase.database();
+    const dbRef = db.ref("/patientstore");
+    dbRef.on('value', (snapshot) => {
+      const tempData: PatientData[] = [];
+      if (snapshot.exists()) {
+        snapshot.forEach((child) => {
+          const row = child.val();
+          tempData.push(row);
+        });
+      }
+      setData(tempData);
+    });
+    return () => dbRef.off();
   }, []);
 
   return {
@@ -106,8 +102,14 @@ const Page = () => {
                 </Button>
               </div>
             </Stack>
-            <CustomersSearch />
-            <CommonTable columns={columns} data={data} page={0} rowsPerPage={10} total={10} />
+            <CommonTable
+              columns={columns}
+              data={data}
+              page={0}
+              rowsPerPage={10}
+              total={10}
+              withPagination={false}
+            />
           </Stack>
         </Container>
       </Box>
