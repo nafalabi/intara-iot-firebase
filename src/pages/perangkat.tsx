@@ -2,22 +2,23 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import { format } from "date-fns";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import PencilSquareIcon from "@heroicons/react/24/solid/PencilSquareIcon";
+import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import firebase from "firebase";
-import { Box, Button, Container, Stack, SvgIcon, Typography } from "@mui/material";
+import { Box, Button, Container, IconButton, Stack, SvgIcon, Typography } from "@mui/material";
 import { Layout as DashboardLayout } from "src/layouts/dashboard/layout";
 import { initializeFirebaseClient } from "../service/firebase-client";
 import CommonTable, { CommonTableColumn } from "src/components/table";
 import { DeviceData, PatientData } from "src/service/data-definition";
 import ModalCreatePerangkat from "src/sections/perangkat/modal-create";
+import ModalEditPerangkat from "src/sections/perangkat/modal-edit";
+import ModalDeletePerangkat from "src/sections/perangkat/modal-delete";
 
 type DeviceDataTableItem = DeviceData & { patientname?: string };
 
-const generateColumns = ({
-  handleEdit,
-  handleDelete,
-}: {
-  handleEdit: () => void;
-  handleDelete: () => void;
+const generateColumns = (handlers: {
+  handleOpenEditModal: (data: DeviceData) => void;
+  handleOpenDeleteModal: (data: DeviceData) => void;
 }): CommonTableColumn<DeviceDataTableItem>[] => [
   {
     accessor: "updated_at",
@@ -45,7 +46,20 @@ const generateColumns = ({
   {
     label: "Action",
     render: (data) => {
-      return <div></div>;
+      return (
+        <Stack direction="row" gap={2}>
+          <IconButton size="small" onClick={() => handlers.handleOpenEditModal(data)}>
+            <SvgIcon fontSize="small">
+              <PencilSquareIcon />
+            </SvgIcon>
+          </IconButton>
+          <IconButton size="small" onClick={() => handlers.handleOpenDeleteModal(data)}>
+            <SvgIcon fontSize="small">
+              <XCircleIcon />
+            </SvgIcon>
+          </IconButton>
+        </Stack>
+      );
     },
   },
 ];
@@ -96,20 +110,31 @@ const useDataPerangkat = () => {
 };
 
 const Page = () => {
+  const { data } = useDataPerangkat();
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
+  const [selectedDevice, setSelectedDevice] = useState<DeviceData | null>(null);
 
-  const { data } = useDataPerangkat();
+  const handleOpenEditModal = (data: DeviceData) => {
+    setSelectedDevice(data);
+    setIsModalEditOpen(true);
+  };
+
+  const handleOpenDeleteModal = (data: DeviceData) => {
+    setSelectedDevice(data);
+    setIsModalDeleteOpen(true);
+  };
+
   const columns = generateColumns({
-    handleEdit: () => setIsModalEditOpen(true),
-    handleDelete: () => setIsModalDeleteOpen(true),
+    handleOpenEditModal,
+    handleOpenDeleteModal,
   });
 
   return (
     <>
       <Head>
-        <title>Data Pasien | Devias Kit</title>
+        <title>Data Perangkat | Devias Kit</title>
       </Head>
       <Box
         component="main"
@@ -152,6 +177,16 @@ const Page = () => {
       <ModalCreatePerangkat
         handleClose={() => setIsModalCreateOpen(false)}
         open={isModalCreateOpen}
+      />
+      <ModalEditPerangkat
+        handleClose={() => setIsModalEditOpen(false)}
+        open={isModalEditOpen}
+        data={selectedDevice}
+      />
+      <ModalDeletePerangkat
+        handleClose={() => setIsModalDeleteOpen(false)}
+        open={isModalDeleteOpen}
+        data={selectedDevice}
       />
     </>
   );

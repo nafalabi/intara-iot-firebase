@@ -12,22 +12,28 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DeviceDataSchema, PatientData, PatientDataSchema } from "src/service/data-definition";
+import {
+  DeviceData,
+  DeviceDataSchema,
+  PatientData,
+  PatientDataSchema,
+} from "src/service/data-definition";
 import { Stack } from "@mui/system";
 import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { initializeFirebaseClient } from "src/service/firebase-client";
 
-export interface ModalCreatePerangkatProps {
+export interface ModalEditPerangkatProps {
   handleClose: () => any;
   open: boolean;
+  data: DeviceData | null;
 }
 
 const NewDeviceDataSchema = DeviceDataSchema.omit({
   updated_at: true,
 });
 
-const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) => {
+const ModalEditPerangkat = ({ handleClose, open, data }: ModalEditPerangkatProps) => {
   const [listPasien, setListPasien] = useState<PatientData[]>([]);
   const {
     register,
@@ -35,8 +41,9 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
     setValue,
     control,
     formState: { errors },
+    reset,
   } = useForm<typeof NewDeviceDataSchema._output>({
-    defaultValues: {},
+    defaultValues: data ?? {},
     resolver: zodResolver(NewDeviceDataSchema),
   });
 
@@ -57,15 +64,19 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
     fetchDataPasien();
   }, []);
 
+  useEffect(() => {
+    if (data) reset(data);
+  }, [reset, data]);
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
       <form
         onSubmit={handleSubmit(
-          async (data, event) => {
+          async (_data, event) => {
             event?.preventDefault();
-            await fetch("/api/device", {
-              method: "POST",
-              body: JSON.stringify(data),
+            await fetch(`/api/device/${_data.deviceid}`, {
+              method: "PUT",
+              body: JSON.stringify(_data),
               headers: {
                 "content-type": "application/json",
               },
@@ -77,7 +88,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
           }
         )}
       >
-        <DialogTitle>Create Perangkat</DialogTitle>
+        <DialogTitle>Edit Perangkat</DialogTitle>
         <DialogContent>
           <Stack spacing={3} sx={{ mt: 2 }}>
             <TextField
@@ -126,7 +137,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
         </DialogContent>
         <DialogActions>
           <Button type="submit" variant="contained" color="primary">
-            Create
+            Edit
           </Button>
           <Button onClick={handleClose} variant="outlined">
             Tutup
@@ -137,4 +148,4 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
   );
 };
 
-export default ModalCreatePerangkat;
+export default ModalEditPerangkat;

@@ -12,22 +12,33 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DeviceDataSchema, PatientData, PatientDataSchema } from "src/service/data-definition";
+import {
+  DeviceData,
+  DeviceDataSchema,
+  PatientData,
+  PatientDataSchema,
+} from "src/service/data-definition";
 import { Stack } from "@mui/system";
 import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { initializeFirebaseClient } from "src/service/firebase-client";
 
-export interface ModalCreatePerangkatProps {
-  handleClose: () => any;
-  open: boolean;
-}
-
 const NewDeviceDataSchema = DeviceDataSchema.omit({
+  patientid: true,
+  weightA: true,
+  weightB: true,
   updated_at: true,
 });
 
-const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) => {
+type DeviceDataType = Partial<DeviceData> & typeof NewDeviceDataSchema._output;
+
+export interface ModalDeletePerangkatProps {
+  handleClose: () => any;
+  open: boolean;
+  data: DeviceDataType | null;
+}
+
+const ModalDeletePerangkat = ({ handleClose, open, data }: ModalDeletePerangkatProps) => {
   const [listPasien, setListPasien] = useState<PatientData[]>([]);
   const {
     register,
@@ -35,8 +46,9 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
     setValue,
     control,
     formState: { errors },
-  } = useForm<typeof NewDeviceDataSchema._output>({
-    defaultValues: {},
+    reset,
+  } = useForm<DeviceDataType>({
+    defaultValues: data ?? {},
     resolver: zodResolver(NewDeviceDataSchema),
   });
 
@@ -57,15 +69,18 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
     fetchDataPasien();
   }, []);
 
+  useEffect(() => {
+    if (data) reset(data);
+  }, [reset, data]);
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
       <form
         onSubmit={handleSubmit(
-          async (data, event) => {
+          async (_data, event) => {
             event?.preventDefault();
-            await fetch("/api/device", {
-              method: "POST",
-              body: JSON.stringify(data),
+            await fetch(`/api/device/${_data.deviceid}`, {
+              method: "DELETE",
               headers: {
                 "content-type": "application/json",
               },
@@ -77,7 +92,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
           }
         )}
       >
-        <DialogTitle>Create Perangkat</DialogTitle>
+        <DialogTitle>Delete Perangkat</DialogTitle>
         <DialogContent>
           <Stack spacing={3} sx={{ mt: 2 }}>
             <TextField
@@ -85,12 +100,14 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
               fullWidth
               helperText={errors.deviceid && errors.deviceid.message}
               label="ID Perangkat"
+              disabled
               {...register("deviceid")}
             />
             <FormControl fullWidth>
               <InputLabel>Pasien</InputLabel>
               <Select
                 label="Pasien"
+                disabled
                 {...register("patientid", {
                   valueAsNumber: true,
                 })}
@@ -108,6 +125,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
               helperText={errors.weightA && errors.weightA.message}
               label="Berat A"
               type="number"
+              disabled
               {...register("weightA", {
                 valueAsNumber: true,
               })}
@@ -118,6 +136,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
               helperText={errors.weightB && errors.weightB.message}
               label="weightB"
               type="number"
+              disabled
               {...register("weightB", {
                 valueAsNumber: true,
               })}
@@ -126,7 +145,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
         </DialogContent>
         <DialogActions>
           <Button type="submit" variant="contained" color="primary">
-            Create
+            Delete
           </Button>
           <Button onClick={handleClose} variant="outlined">
             Tutup
@@ -137,4 +156,4 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
   );
 };
 
-export default ModalCreatePerangkat;
+export default ModalDeletePerangkat;
