@@ -104,6 +104,7 @@ const useDataPerangkat = () => {
       });
       setData(newData);
     });
+    return () => ref.off("value");
   }, []);
 
   return { data };
