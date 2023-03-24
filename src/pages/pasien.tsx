@@ -115,7 +115,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Data Pasien | Devias Kit</title>
+        <title>Data Pasien | Intara</title>
       </Head>
       <Box
         component="main"
