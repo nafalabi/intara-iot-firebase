@@ -28,24 +28,20 @@ export const DeviceDataSchema = z.object({
 
 export type DeviceData = typeof DeviceDataSchema._output;
 
-export interface Usage {
-  usageid: string;
+// Usage data only sent from iot device
+export type UsageData = {
+  usageid: `${DeviceData["deviceid"]}_${UsageData["time"]}`;
   deviceid: string;
   patientid: PatientData["patientid"];
-  patienref: `${PatientData["patientname"]}-${PatientData["updated_at"]}`;
-  infusionid: string;
-  startDateTime: number;
-  endDateTime: number;
-  initialWeightA: number;
-  initialWeightB: number;
-  currentWeightA: number;
-  currentWeightB: number;
-  rateDrop: number;
-}
+  weightA: number;
+  weightB: number;
+  time: number; // epoch
+  dropCount: number;
+};
 
 export interface RootData {
   usagestore: {
-    [key: NonNullable<Usage["usageid"]>]: Usage;
+    [key: NonNullable<UsageData["usageid"]>]: UsageData;
   };
   devicestore: {
     [key: NonNullable<DeviceData["deviceid"]>]: DeviceData;
