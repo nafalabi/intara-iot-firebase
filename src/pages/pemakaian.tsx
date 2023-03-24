@@ -134,7 +134,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Data Penggunaan | Intara</title>
+        <title>Data Pemakaian | Intara</title>
       </Head>
       <Box
         component="main"
@@ -147,7 +147,7 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Data Penggunaan</Typography>
+                <Typography variant="h4">Data Pemakaian</Typography>
               </Stack>
             </Stack>
             <Stack direction="row" spacing={4}>
