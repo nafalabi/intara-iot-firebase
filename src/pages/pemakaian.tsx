@@ -106,6 +106,7 @@ const useUsageData = () => {
     if (deviceid && startDate && endDate) {
       handleFetchData();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deviceid, startDate, endDate]);
 
   return {
