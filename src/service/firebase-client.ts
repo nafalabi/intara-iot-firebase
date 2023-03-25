@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/analytics";
+import "firebase/auth";
 // https://firebase.google.com/docs/web/setup#available-libraries
 import firebaseConfig from "../../firebase-client-config.json";
 
