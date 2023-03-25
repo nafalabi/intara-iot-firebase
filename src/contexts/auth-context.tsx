@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { initializeFirebaseClient } from "src/service/firebase-client";
 
 type UserType = {
   id: string;
@@ -94,6 +95,7 @@ export const useInitAuthContext = () => {
   };
 
   useEffect(() => {
+    initializeFirebaseClient();
     const fbauth = firebase.auth();
     const unsubscribe = fbauth.onAuthStateChanged(handleAuthChange);
     return () => unsubscribe();
