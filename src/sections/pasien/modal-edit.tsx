@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PatientData, PatientDataSchema } from "src/service/data-definition";
 import { Stack } from "@mui/system";
 import { useEffect } from "react";
+import { RequestHelper } from "src/utils/request-helper";
+import { enqueueSnackbar } from "notistack";
 
 export interface ModalEditPasienProps {
   handleClose: () => any;
@@ -39,6 +41,16 @@ const ModalEditPasien = ({ handleClose, open, data }: ModalEditPasienProps) => {
     resolver: zodResolver(NewPatientDataSchema),
   });
 
+  const doEdit = async (_data: typeof NewPatientDataSchema._output) => {
+    const response = await RequestHelper.doRequest(`/api/pasien/${_data.patientid}`, "PUT", _data);
+    if (!response.ok) {
+      enqueueSnackbar({
+        message: "Gagal mengedit pasien",
+        variant: "error",
+      });
+    }
+  };
+
   useEffect(() => {
     if (data) reset(data);
   }, [data, reset]);
@@ -49,13 +61,7 @@ const ModalEditPasien = ({ handleClose, open, data }: ModalEditPasienProps) => {
         onSubmit={handleSubmit(
           async (_data, event) => {
             event?.preventDefault();
-            await fetch(`/api/pasien/${_data.patientid}`, {
-              method: "PUT",
-              body: JSON.stringify(_data),
-              headers: {
-                "content-type": "application/json",
-              },
-            });
+            await doEdit(_data);
             handleClose();
           },
           (...props) => {

@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PatientData, PatientDataSchema } from "src/service/data-definition";
 import { Stack } from "@mui/system";
+import { enqueueSnackbar } from "notistack";
+import { RequestHelper } from "src/utils/request-helper";
 
 export interface ModalCreatePasienProps {
   handleClose: () => any;
@@ -37,19 +39,23 @@ const ModalCreatePasien = ({ handleClose, open }: ModalCreatePasienProps) => {
     resolver: zodResolver(NewPatientDataSchema),
   });
 
+  const doCreatePatient = async (data: typeof NewPatientDataSchema._output) => {
+    const response = await RequestHelper.doRequest("/api/pasien", "POST", data);
+    if (!response.ok) {
+      enqueueSnackbar({
+        message: "Gagal menambahkan pasien",
+        variant: "error",
+      });
+    }
+  };
+
   return (
     <Dialog onClose={handleClose} open={open} maxWidth="md" fullWidth>
       <form
         onSubmit={handleSubmit(
           async (data, event) => {
             event?.preventDefault();
-            await fetch("/api/pasien", {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {
-                "content-type": "application/json",
-              },
-            });
+            await doCreatePatient(data);
             handleClose();
           },
           (...props) => {

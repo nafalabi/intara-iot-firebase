@@ -22,6 +22,8 @@ import { Stack } from "@mui/system";
 import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { initializeFirebaseClient } from "src/service/firebase-client";
+import { RequestHelper } from "src/utils/request-helper";
+import { enqueueSnackbar } from "notistack";
 
 export interface ModalEditPerangkatProps {
   handleClose: () => any;
@@ -59,6 +61,16 @@ const ModalEditPerangkat = ({ handleClose, open, data }: ModalEditPerangkatProps
     setListPasien(newListPasien);
   };
 
+  const doEdit = async (_data: typeof NewDeviceDataSchema._output) => {
+    const response = await RequestHelper.doRequest(`/api/device/${_data.deviceid}`, "PUT", _data);
+    if (!response.ok) {
+      enqueueSnackbar({
+        message: "Gagal mengedit perangkat",
+        variant: "error",
+      });
+    }
+  };
+
   useEffect(() => {
     initializeFirebaseClient();
     fetchDataPasien();
@@ -74,13 +86,7 @@ const ModalEditPerangkat = ({ handleClose, open, data }: ModalEditPerangkatProps
         onSubmit={handleSubmit(
           async (_data, event) => {
             event?.preventDefault();
-            await fetch(`/api/device/${_data.deviceid}`, {
-              method: "PUT",
-              body: JSON.stringify(_data),
-              headers: {
-                "content-type": "application/json",
-              },
-            });
+            await doEdit(_data);
             handleClose();
           },
           (...props) => {
@@ -96,12 +102,16 @@ const ModalEditPerangkat = ({ handleClose, open, data }: ModalEditPerangkatProps
               fullWidth
               helperText={errors.deviceid && errors.deviceid.message}
               label="ID Perangkat"
+              InputProps={{
+                readOnly: true,
+              }}
               {...register("deviceid")}
             />
             <FormControl fullWidth>
               <InputLabel>Pasien</InputLabel>
               <Select
                 label="Pasien"
+                error={!!errors.patientid}
                 {...register("patientid", {
                   valueAsNumber: true,
                 })}

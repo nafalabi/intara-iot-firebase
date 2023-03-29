@@ -22,6 +22,8 @@ import { Stack } from "@mui/system";
 import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { initializeFirebaseClient } from "src/service/firebase-client";
+import { RequestHelper } from "src/utils/request-helper";
+import { enqueueSnackbar } from "notistack";
 
 const NewDeviceDataSchema = DeviceDataSchema.omit({
   patientid: true,
@@ -64,6 +66,16 @@ const ModalDeletePerangkat = ({ handleClose, open, data }: ModalDeletePerangkatP
     setListPasien(newListPasien);
   };
 
+  const doDelete = async (_data: DeviceDataType) => {
+    const response = await RequestHelper.doRequest(`/api/device/${_data.deviceid}`, "DELETE");
+    if (!response.ok) {
+      enqueueSnackbar({
+        message: "Gagal menghapus perangkat",
+        variant: "error",
+      });
+    }
+  };
+
   useEffect(() => {
     initializeFirebaseClient();
     fetchDataPasien();
@@ -79,12 +91,7 @@ const ModalDeletePerangkat = ({ handleClose, open, data }: ModalDeletePerangkatP
         onSubmit={handleSubmit(
           async (_data, event) => {
             event?.preventDefault();
-            await fetch(`/api/device/${_data.deviceid}`, {
-              method: "DELETE",
-              headers: {
-                "content-type": "application/json",
-              },
-            });
+            await doDelete(_data);
             handleClose();
           },
           (...props) => {

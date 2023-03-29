@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { initializeFirebaseClient } from "src/service/firebase-client";
+import { RequestHelper } from "src/utils/request-helper";
 
 type UserType = {
   id: string;
@@ -82,6 +83,7 @@ export const useInitAuthContext = () => {
       return;
     }
     const token = await user.getIdToken();
+    RequestHelper.setToken(token);
     dispatch({
       type: "INITIALIZE",
       payload: {

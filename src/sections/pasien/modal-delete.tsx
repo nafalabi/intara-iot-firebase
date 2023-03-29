@@ -16,6 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PatientData, PatientDataSchema } from "src/service/data-definition";
 import { Stack } from "@mui/system";
 import { useEffect } from "react";
+import { RequestHelper } from "src/utils/request-helper";
+import { enqueueSnackbar } from "notistack";
 
 const NewPatientDataSchema = PatientDataSchema.omit({
   ageinmonth: true,
@@ -48,6 +50,16 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
     resolver: zodResolver(NewPatientDataSchema),
   });
 
+  const doDelete = async (_data: PatientDataSchemaType) => {
+    const response = await RequestHelper.doRequest(`/api/pasien/${_data.patientid}`, "DELETE");
+    if (!response.ok) {
+      enqueueSnackbar({
+        message: "Gagal menghapus pasien",
+        variant: "error",
+      });
+    }
+  };
+
   useEffect(() => {
     if (data) reset(data);
   }, [data, reset]);
@@ -58,12 +70,7 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
         onSubmit={handleSubmit(
           async (_data, event) => {
             event?.preventDefault();
-            await fetch(`/api/pasien/${_data.patientid}`, {
-              method: "DELETE",
-              headers: {
-                "content-type": "application/json",
-              },
-            });
+            await doDelete(_data);
             handleClose();
           },
           (...props) => {
@@ -73,9 +80,7 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
       >
         <DialogTitle>Delete Pasien</DialogTitle>
         <DialogContent>
-          <Typography>
-            Are you sure to delete this data?
-          </Typography>
+          <Typography>Are you sure to delete this data?</Typography>
           <Stack spacing={3} sx={{ mt: 2 }}>
             <TextField
               error={!!errors.patientname}

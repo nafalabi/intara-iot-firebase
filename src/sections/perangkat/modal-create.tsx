@@ -17,6 +17,8 @@ import { Stack } from "@mui/system";
 import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { initializeFirebaseClient } from "src/service/firebase-client";
+import { RequestHelper } from "src/utils/request-helper";
+import { enqueueSnackbar } from "notistack";
 
 export interface ModalCreatePerangkatProps {
   handleClose: () => any;
@@ -52,6 +54,16 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
     setListPasien(newListPasien);
   };
 
+  const doCreate = async (data: typeof NewDeviceDataSchema._output) => {
+    const response = await RequestHelper.doRequest(`/api/device`, "POST", data);
+    if (!response.ok) {
+      enqueueSnackbar({
+        message: "Gagal menambahkan perangkat",
+        variant: "error",
+      });
+    }
+  };
+
   useEffect(() => {
     initializeFirebaseClient();
     fetchDataPasien();
@@ -63,13 +75,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
         onSubmit={handleSubmit(
           async (data, event) => {
             event?.preventDefault();
-            await fetch("/api/device", {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: {
-                "content-type": "application/json",
-              },
-            });
+            await doCreate(data);
             handleClose();
           },
           (...props) => {
