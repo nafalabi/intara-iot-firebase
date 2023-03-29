@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { format } from "date-fns";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
@@ -66,18 +66,22 @@ const generateColumns = (handlers: {
 
 const useDataPerangkat = () => {
   const [data, setData] = useState<DeviceDataTableItem[]>([]);
+  const patientDataCache = useRef<Record<PatientData["patientid"], PatientData>>({});
 
   const doGetPatientData = async (patientId: string) => {
+    if (patientDataCache.current[patientId]) return patientDataCache.current[patientId];
     const db = firebase.database();
     const ref = db.ref(`/patientstore/${patientId}`);
     const snapshot = await ref.once("value");
-    return snapshot.val() as PatientData | null;
+    const value = snapshot.val() as PatientData | null;
+    if (value) patientDataCache.current[patientId] = value;
+    return value;
   };
 
-  const doUpdatePatientData = (patientid: string, patientData: PatientData) => {
+  const doUpdatePatientData = (deviceid: string, patientData: PatientData) => {
     setData((oldData) => {
       const newData = Array.from(oldData);
-      const index = newData.findIndex(({ patientid: _patientid }) => patientid === _patientid);
+      const index = newData.findIndex(({ deviceid: _deviceid }) => deviceid === _deviceid);
       if (index != -1) {
         const row = Object.assign({}, newData[index]);
         row.patientname = patientData.patientname;
@@ -99,7 +103,7 @@ const useDataPerangkat = () => {
         if (!value.patientid) return;
         doGetPatientData(value.patientid).then((patientData) => {
           if (!patientData) return;
-          doUpdatePatientData(value.patientid as string, patientData);
+          doUpdatePatientData(value.deviceid as string, patientData);
         });
       });
       setData(newData);
