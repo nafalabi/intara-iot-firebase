@@ -2,6 +2,7 @@ import { database } from "firebase-admin";
 import type { NextApiHandler } from "next";
 import { initializeFirebaseAdmin } from "src/service/firebase-admin";
 import { PatientDataSchema } from "src/service/data-definition";
+import withAuthGuard from "src/guards/api-auth-guard";
 
 const NewPatienDataSchema = PatientDataSchema.omit({
   patientid: true,
@@ -57,4 +58,4 @@ const handler: NextApiHandler = (req, res) => {
   return res.status(405).json({ success: false, message: "Method not allowed" });
 };
 
-export default handler;
+export default withAuthGuard(handler);

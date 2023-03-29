@@ -1,4 +1,4 @@
-import admin from "firebase-admin";
+import admin, { auth } from "firebase-admin";
 import serviceAccount from "../../firebase-service-account.json";
 
 export const initializeFirebaseAdmin = () => {
@@ -13,3 +13,10 @@ export const initializeFirebaseAdmin = () => {
       "https://intara-47-default-rtdb.asia-southeast1.firebasedatabase.app",
   });
 };
+
+export const verifyAuthToken = async (token: string) => {
+  initializeFirebaseAdmin();
+  const fbauth = auth();
+  const decodedIdToken = await fbauth.verifyIdToken(token as string);
+  return decodedIdToken;
+}

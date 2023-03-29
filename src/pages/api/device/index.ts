@@ -3,6 +3,7 @@ import { v4 } from "uuid";
 import type { NextApiHandler } from "next";
 import { initializeFirebaseAdmin } from "src/service/firebase-admin";
 import { DeviceData, DeviceDataSchema } from "src/service/data-definition";
+import withAuthGuard from "src/guards/api-auth-guard";
 
 const NewDeviceDataSchema = DeviceDataSchema.omit({
   updated_at: true,
@@ -34,4 +35,4 @@ const handler: NextApiHandler = (req, res) => {
   return res.status(201).json({ success: true, data: newData });
 };
 
-export default handler;
+export default withAuthGuard(handler);
