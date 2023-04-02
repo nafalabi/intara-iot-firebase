@@ -22,7 +22,7 @@ export const OverviewBeratInfusB = (props) => {
             <Typography color="text.secondary" gutterBottom variant="overline">
               Berat Infus B
             </Typography>
-            <Typography variant="h4">{value}%</Typography>
+            <Typography variant="h4">{value}</Typography>
           </Stack>
           <Avatar
             sx={{
@@ -42,6 +42,6 @@ export const OverviewBeratInfusB = (props) => {
 };
 
 OverviewBeratInfusB.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
   sx: PropTypes.object,
 };

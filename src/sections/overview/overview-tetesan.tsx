@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
-import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
 import EyeDropperIcon from '@heroicons/react/24/solid/EyeDropperIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
 export const OverviewTetesan = (props) => {
-  const { difference, positive = false, sx, value } = props;
+  const { sx, value } = props;
 
   return (
     <Card sx={sx}>
@@ -45,8 +43,6 @@ export const OverviewTetesan = (props) => {
 };
 
 OverviewTetesan.prototypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
   sx: PropTypes.object,
   value: PropTypes.string.isRequired
 };

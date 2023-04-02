@@ -9,7 +9,6 @@ const useFetchDevice = () => {
   const [data, setData] = useState<DeviceData[]>([]);
 
   const handleFetchData = async () => {
-    console.log("called");
     const db = firebase.database();
     const ref = db.ref("/devicestore");
     const snap = await ref.get();
@@ -22,7 +21,6 @@ const useFetchDevice = () => {
     });
     const [_lastKey] = keys.slice(-1);
     setData(newItem);
-    console.log(newItem);
   };
 
   useEffect(() => {
@@ -41,7 +39,19 @@ type SelectDeviceProps = {
 };
 
 const SelectDevice = ({ onChange }: SelectDeviceProps) => {
-  const { data } = useFetchDevice();
+  const { data: deviceList } = useFetchDevice();
+  const [deviceId, setDeviceId] = useState<string>("");
+
+  useEffect(() => {
+    if (deviceList.length > 0) {
+      const _deviceId = deviceList[0].deviceid;
+      if (_deviceId) {
+        onChange(_deviceId);
+        setDeviceId(_deviceId);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(deviceList)]);
 
   return (
     <FormControl
@@ -52,9 +62,17 @@ const SelectDevice = ({ onChange }: SelectDeviceProps) => {
       }}
     >
       <InputLabel>Pilih Perangkat</InputLabel>
-      <Select label="Pilih Perangkat" onChange={(e) => onChange(e.target.value as string)}>
-        {data.map(({ deviceid }) => (
-          <MenuItem key={deviceid} value={deviceid}>
+      <Select
+        label="Pilih Perangkat"
+        onChange={(e) => {
+          const deviceid = e.target.value as string;
+          onChange(deviceid);
+          setDeviceId(deviceid);
+        }}
+        value={deviceId}
+      >
+        {deviceList.map(({ deviceid }) => (
+          <MenuItem key={deviceid} value={deviceid} selected={deviceid === deviceId}>
             {deviceid}
           </MenuItem>
         ))}

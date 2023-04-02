@@ -39,7 +39,7 @@ const generateColumns = (handlers: {
   {
     accessor: "weight",
     label: "Berat",
-    render: (data) => `${data.weight} Bulan`,
+    render: (data) => `${data.weight} Kg`,
   },
   {
     accessor: "ageinmonth",

@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
-import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
 import ScaleIcon from '@heroicons/react/24/solid/ScaleIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
 export const OverviewBeratInfusA = (props) => {
-  const { difference, positive = false, sx, value } = props;
+  const { sx, value } = props;
 
   return (
     <Card sx={sx}>
@@ -45,8 +43,6 @@ export const OverviewBeratInfusA = (props) => {
 };
 
 OverviewBeratInfusA.propTypes = {
-  difference: PropTypes.number,
-  positive: PropTypes.bool,
   value: PropTypes.string.isRequired,
   sx: PropTypes.object
 };
