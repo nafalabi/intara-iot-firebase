@@ -30,9 +30,9 @@ export const Layout = withAuthGuard((props) => {
 
   useEffect(
     () => {
-      if (openNav) {
-        setOpenNav(false);
-      }
+      // if (openNav) {
+      //   setOpenNav(false);
+      // }
     },
     [pathname, openNav]
   );
