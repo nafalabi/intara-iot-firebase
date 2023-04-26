@@ -30,3 +30,4 @@ yarn-error.log*
 # firebase
 firebase-service-account.json
 firebase-client-config.json
+.vercel

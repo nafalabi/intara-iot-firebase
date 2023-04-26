@@ -38,7 +38,7 @@ const columns: CommonTableColumn<UsageDataTableItem>[] = [
   {
     accessor: "time",
     label: "Waktu",
-    render: (data) => format(data.time * 1000, "dd/MM/yyyy"),
+    render: (data) => format(data.time * 1000, "dd/MM/yyyy hh:mm a"),
   },
   {
     accessor: "dropCount",
