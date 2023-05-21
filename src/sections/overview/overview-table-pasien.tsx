@@ -17,11 +17,11 @@ const columns: CommonTableColumn<Partial<PatientData>>[] = [
   },
   {
     accessor: "patientname",
-    label: "Nama Pasien",
+    label: "Nama Hewan",
   },
   {
     accessor: "patienttype",
-    label: "Jenis Pasien",
+    label: "Jenis Hewan",
   },
   {
     accessor: "gender",

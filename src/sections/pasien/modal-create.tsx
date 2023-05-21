@@ -70,20 +70,20 @@ const ModalCreatePasien = ({ handleClose, open }: ModalCreatePasienProps) => {
               error={!!errors.patientname}
               fullWidth
               helperText={errors.patientname && errors.patientname.message}
-              label="Patient Name"
+              label="Nama Hewan"
               {...register("patientname")}
             />
             <TextField
               error={!!errors.patienttype}
               fullWidth
               helperText={errors.patienttype && errors.patienttype.message}
-              label="Patient Type"
+              label="Jenis Hewan"
               {...register("patienttype")}
             />
             <FormControl fullWidth>
               <InputLabel>Gender</InputLabel>
               <Select
-                label="Gender"
+                label="Kelamin"
                 {...register("gender", {
                   valueAsNumber: true,
                 })}
@@ -96,7 +96,7 @@ const ModalCreatePasien = ({ handleClose, open }: ModalCreatePasienProps) => {
               error={!!errors.ageinmonth}
               fullWidth
               helperText={errors.ageinmonth && errors.ageinmonth.message}
-              label="Age in Month"
+              label="Umur/Dalam Bulan"
               type="number"
               {...register("ageinmonth", {
                 valueAsNumber: true,
@@ -106,7 +106,7 @@ const ModalCreatePasien = ({ handleClose, open }: ModalCreatePasienProps) => {
               error={!!errors.weight}
               fullWidth
               helperText={errors.weight && errors.weight.message}
-              label="Weight"
+              label="Berat Hewan"
               type="number"
               {...register("weight", {
                 valueAsNumber: true,
@@ -116,7 +116,7 @@ const ModalCreatePasien = ({ handleClose, open }: ModalCreatePasienProps) => {
               error={!!errors.targetinfusion}
               fullWidth
               helperText={errors.targetinfusion && errors.targetinfusion.message}
-              label="Target Infusion"
+              label="Target Infus"
               type="number"
               {...register("targetinfusion", {
                 valueAsNumber: true,

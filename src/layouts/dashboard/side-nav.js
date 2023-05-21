@@ -49,7 +49,9 @@ export const SideNav = (props) => {
             sx={{
               display: 'inline-flex',
               height: 32,
-              width: 32
+              width: 32,
+              backgroundColor: '#fff',
+              borderRadius: '0.5rem',
             }}
           >
             <Logo />
@@ -74,12 +76,12 @@ export const SideNav = (props) => {
                 Intara
               </Typography>
             </div>
-            <SvgIcon
+            {/* <SvgIcon
               fontSize="small"
               sx={{ color: 'neutral.500' }}
             >
               <ChevronUpDownIcon />
-            </SvgIcon>
+            </SvgIcon> */}
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />

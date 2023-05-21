@@ -112,7 +112,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
               error={!!errors.weightA}
               fullWidth
               helperText={errors.weightA && errors.weightA.message}
-              label="Berat A"
+              label="Berat Infus A"
               type="number"
               {...register("weightA", {
                 valueAsNumber: true,
@@ -122,7 +122,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
               error={!!errors.weightB}
               fullWidth
               helperText={errors.weightB && errors.weightB.message}
-              label="weightB"
+              label="Berat Infus B"
               type="number"
               {...register("weightB", {
                 valueAsNumber: true,

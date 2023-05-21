@@ -34,15 +34,6 @@ export const items = [
     ),
   },
   {
-    title: "Data Sumbatan",
-    path: "/sumbatan",
-    icon: (
-      <SvgIcon fontSize="small">
-        <BookmarkSlashIcon />
-      </SvgIcon>
-    ),
-  },
-  {
     title: "Data Device",
     path: "/perangkat",
     icon: (

@@ -17,11 +17,11 @@ type UsageDataTableItem = UsageData & { patientname?: PatientData["patientname"]
 const columns: CommonTableColumn<UsageDataTableItem>[] = [
   {
     accessor: "usageid",
-    label: "Usage ID",
+    label: "ID Pemakaian",
   },
   {
     accessor: "deviceid",
-    label: "Device ID",
+    label: "ID Alat",
   },
   {
     accessor: "patientname",
