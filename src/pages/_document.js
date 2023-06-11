@@ -12,7 +12,7 @@ const Favicon = () => (
     />
     <link
       rel="icon"
-      href="/favicon.ico"
+      href="/logo-intara.ico"
     />
     <link
       rel="icon"

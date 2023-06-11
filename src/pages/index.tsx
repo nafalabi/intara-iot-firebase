@@ -21,6 +21,7 @@ const useOverviewData = (deviceId: DeviceData["deviceid"] | null) => {
   const [isLoading, setIsLoading] = useState(false);
   const [overviewData, setOverviewData] = useState({
     dropCount: 0,
+    dropPerMin: 0,
     weightA: 0,
     weightB: 0,
     infusionStatus: false,
@@ -42,6 +43,7 @@ const useOverviewData = (deviceId: DeviceData["deviceid"] | null) => {
         const value: UsageData = _snap.val();
         setOverviewData({
           dropCount: value.dropCount,
+          dropPerMin: value.dropPerMin,
           weightA: value.weightA,
           weightB: value.weightB,
           infusionStatus: value.dropCount > 0,
@@ -113,6 +115,7 @@ const FeedbackPanel = ({ children }: React.ComponentProps<"div">) => {
 type OverviewContentProps = {
   deviceid: DeviceData["deviceid"] | null;
   dropCount: number;
+  dropPerMin: number;
   weightA: number;
   weightB: number;
   infusionStatus: boolean;
@@ -121,6 +124,7 @@ type OverviewContentProps = {
 const OverviewContent = ({
   deviceid,
   dropCount,
+  dropPerMin,
   weightA,
   weightB,
   infusionStatus,
@@ -128,7 +132,7 @@ const OverviewContent = ({
   return (
     <Grid container spacing={3}>
       <Grid xs={12} sm={6} lg={3}>
-        <OverviewTetesan sx={{ height: "100%" }} value={`${dropCount} drop/min`} />
+        <OverviewTetesan sx={{ height: "100%" }} value={`${dropPerMin} drop/min`} />
       </Grid>
       <Grid xs={12} sm={6} lg={3}>
         <OverviewBeratInfusA sx={{ height: "100%" }} value={`${weightA}g`} />

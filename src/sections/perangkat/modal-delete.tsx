@@ -126,7 +126,7 @@ const ModalDeletePerangkat = ({ handleClose, open, data }: ModalDeletePerangkatP
                 ))}
               </Select>
             </FormControl>
-            <TextField
+            {/* <TextField
               error={!!errors.weightA}
               fullWidth
               helperText={errors.weightA && errors.weightA.message}
@@ -147,7 +147,7 @@ const ModalDeletePerangkat = ({ handleClose, open, data }: ModalDeletePerangkatP
               {...register("weightB", {
                 valueAsNumber: true,
               })}
-            />
+            /> */}
           </Stack>
         </DialogContent>
         <DialogActions>

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import firebase from "firebase/app";
 import "firebase/database";
 import CommonTable, { CommonTableColumn } from "src/components/table";
-import { DeviceData, PatientData } from "src/service/data-definition";
+import { DeviceData, Gender, PatientData } from "src/service/data-definition";
 import { initializeFirebaseClient } from "src/service/firebase-client";
 
 const formatDate = (date: number) => format(date, "dd/MM/yyyy hh:mm a");
@@ -26,7 +26,7 @@ const columns: CommonTableColumn<Partial<PatientData>>[] = [
   {
     accessor: "gender",
     label: "Kelamin",
-    render: (data) => `${data.weight} Bulan`,
+    render: (data) => `${data.gender === Gender.male ? "Jantan" : "Betina"}`,
   },
   {
     accessor: "weight",

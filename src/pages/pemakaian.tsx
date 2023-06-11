@@ -44,6 +44,11 @@ const columns: CommonTableColumn<UsageDataTableItem>[] = [
     accessor: "dropCount",
     label: "Jumlah Tetesan",
   },
+  {
+    accessor: "dropPerMin",
+    label: "Tetes/Menit",
+    render: (data) => `${data.dropPerMin} TPM`,
+  },
 ];
 
 const useUsageData = () => {

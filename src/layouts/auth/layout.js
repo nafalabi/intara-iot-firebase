@@ -97,7 +97,7 @@ export const Layout = (props) => {
             {/* </Typography> */}
             <img
               alt=""
-              src="/assets/animal-medic.jpg" style={{height:"500px",width:"auto",borderRadius:20}}
+              src="/assets/3.png" style={{height:"500px",width:"auto",borderRadius:20}}
             />
           </Box>
         </Grid>

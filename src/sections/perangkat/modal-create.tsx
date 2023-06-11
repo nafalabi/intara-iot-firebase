@@ -108,7 +108,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
                 ))}
               </Select>
             </FormControl>
-            <TextField
+            {/* <TextField
               error={!!errors.weightA}
               fullWidth
               helperText={errors.weightA && errors.weightA.message}
@@ -127,7 +127,7 @@ const ModalCreatePerangkat = ({ handleClose, open }: ModalCreatePerangkatProps) 
               {...register("weightB", {
                 valueAsNumber: true,
               })}
-            />
+            /> */}
           </Stack>
         </DialogContent>
         <DialogActions>

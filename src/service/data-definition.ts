@@ -37,6 +37,7 @@ export type UsageData = {
   weightB: number;
   time: number; // epoch
   dropCount: number;
+  dropPerMin : number;
 };
 
 export interface RootData {

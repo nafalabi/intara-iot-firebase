@@ -33,18 +33,18 @@ const generateColumns = (handlers: {
     accessor: "patientname",
     label: "Nama Pasien",
   },
+  // {
+  //   accessor: "weightA",
+  //   label: "Berat A",
+  //   render: (data) => `${data.weightA} gram`,
+  // },
+  // {
+  //   accessor: "weightB",
+  //   label: "Berat B",
+  //   render: (data) => `${data.weightB} gram`,
+  // },
   {
-    accessor: "weightA",
-    label: "Berat A",
-    render: (data) => `${data.weightA} gram`,
-  },
-  {
-    accessor: "weightB",
-    label: "Berat B",
-    render: (data) => `${data.weightB} gram`,
-  },
-  {
-    label: "Action",
+    label: "Aksi",
     render: (data) => {
       return (
         <Stack direction="row" gap={2}>
@@ -164,7 +164,7 @@ const Page = () => {
                   variant="contained"
                   onClick={() => setIsModalCreateOpen(true)}
                 >
-                  Add
+                  Tambah Perangkat
                 </Button>
               </div>
             </Stack>

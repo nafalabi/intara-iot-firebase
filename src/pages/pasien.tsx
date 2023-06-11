@@ -38,16 +38,21 @@ const generateColumns = (handlers: {
   },
   {
     accessor: "weight",
-    label: "Berat",
+    label: "Berat Hewan",
     render: (data) => `${data.weight} Kg`,
-  },
+  }, 
   {
     accessor: "ageinmonth",
     label: "Umur",
     render: (data) => `${data.ageinmonth} Bulan`,
   },
   {
-    label: "Action",
+    accessor: "targetinfusion",
+    label: "Target Tetesan",
+    render: (data) => `${data.targetinfusion} Tetes`,
+  },
+  {
+    label: "Aksi",
     render: (data) => (
       <Stack direction="row" gap={2}>
         <IconButton size="small" onClick={() => handlers.handleOpenEditModal(data)}>
@@ -140,7 +145,7 @@ const Page = () => {
                   variant="contained"
                   onClick={() => setIsModalCreateOpen(true)}
                 >
-                  Add
+                  Tambah Pasien
                 </Button>
               </div>
             </Stack>

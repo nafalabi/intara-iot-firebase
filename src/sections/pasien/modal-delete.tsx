@@ -80,13 +80,13 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
       >
         <DialogTitle>Delete Pasien</DialogTitle>
         <DialogContent>
-          <Typography>Are you sure to delete this data?</Typography>
+          <Typography>Apakah anda yakin ingin menghapus pasien?</Typography>
           <Stack spacing={3} sx={{ mt: 2 }}>
             <TextField
               error={!!errors.patientname}
               fullWidth
               helperText={errors.patientname && errors.patientname.message}
-              label="Patient Name"
+              label="Nama Hewan"
               disabled
               {...register("patientname")}
             />
@@ -94,14 +94,14 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
               error={!!errors.patienttype}
               fullWidth
               helperText={errors.patienttype && errors.patienttype.message}
-              label="Patient Type"
+              label="Jenis Hewan"
               disabled
               {...register("patienttype")}
             />
             <FormControl fullWidth>
               <InputLabel>Gender</InputLabel>
               <Select
-                label="Gender"
+                label="Kelamin"
                 disabled
                 {...register("gender", {
                   valueAsNumber: true,
@@ -115,7 +115,7 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
               error={!!errors.ageinmonth}
               fullWidth
               helperText={errors.ageinmonth && errors.ageinmonth.message}
-              label="Age in Month"
+              label="Umur(Bulan)"
               type="number"
               disabled
               {...register("ageinmonth", {
@@ -126,7 +126,7 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
               error={!!errors.weight}
               fullWidth
               helperText={errors.weight && errors.weight.message}
-              label="Weight"
+              label="Berat Hewan"
               type="number"
               disabled
               {...register("weight", {
@@ -137,7 +137,7 @@ const ModalDeletePasien = ({ handleClose, open, data }: ModalDeletePasienProps) 
               error={!!errors.targetinfusion}
               fullWidth
               helperText={errors.targetinfusion && errors.targetinfusion.message}
-              label="Target Infusion"
+              label="Target Infus"
               type="number"
               disabled
               {...register("targetinfusion", {

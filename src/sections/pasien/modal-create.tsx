@@ -63,7 +63,7 @@ const ModalCreatePasien = ({ handleClose, open }: ModalCreatePasienProps) => {
           }
         )}
       >
-        <DialogTitle>Create Pasien</DialogTitle>
+        <DialogTitle>Tambah Pasien</DialogTitle>
         <DialogContent>
           <Stack spacing={3} sx={{ mt: 2 }}>
             <TextField
@@ -96,7 +96,7 @@ const ModalCreatePasien = ({ handleClose, open }: ModalCreatePasienProps) => {
               error={!!errors.ageinmonth}
               fullWidth
               helperText={errors.ageinmonth && errors.ageinmonth.message}
-              label="Umur/Dalam Bulan"
+              label="Umur(Bulan)"
               type="number"
               {...register("ageinmonth", {
                 valueAsNumber: true,

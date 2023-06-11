@@ -26,23 +26,30 @@ const columns: CommonTableColumn<TablePemakaianData>[] = [
     label: "Nama Pasien",
   },
   {
-    accessor: "dropCount",
-    label: "Infus / menit",
-    render: (data) => `${data.dropCount} tetes/menit`,
+    accessor: "targetinfusion",
+    label: "Target Tetesan",
+    render: (data) => `${data.targetinfusion} tetes`,
   },
   {
-    accessor: "targetinfusion",
-    label: "Target infus",
+    accessor: "dropCount",
+    label: "Jumlah Tetesan",
+    render: (data) => `${data.dropCount} tetes`,
   },
+ {
+    accessor: "dropPerMin",
+    label: "Tetes/Menit",
+    render: (data) => `${data.dropPerMin} tetes`,
+  },
+
   {
     accessor: "weightA",
     label: "Berat Infus A",
-    render: (data) => `${data.weightA} Kg`,
+    render: (data) => `${data.weightA} g`,
   },
   {
     accessor: "weightB",
     label: "Berat Infus B",
-    render: (data) => `${data.weightB} Kg`,
+    render: (data) => `${data.weightB} g`,
   },
 ];
 
